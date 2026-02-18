@@ -30,6 +30,17 @@
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       min-height:100vh;
     }
+    
+<script>
+const password = prompt("Mot de passe ?");
+if(password !== "STAFF2026"){
+  document.body.innerHTML = "<h1>Accès refusé</h1>";
+  throw new Error("Access denied");
+}
+</script>
+    
+    
+    
     header{
       position:sticky; top:0; z-index:10;
       background: linear-gradient(to bottom, rgba(15,15,13,.92), rgba(15,15,13,.72));
