@@ -1,60 +1,55 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Dossier RP — Éditeur</title>
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Editor RP</title>
 <style>
-body{
-background:#111;
-color:white;
-font-family:Arial;
-margin:0;
-padding:20px;
-}
-textarea{
-width:100%;
-height:500px;
-background:#222;
-color:white;
-border:1px solid #444;
-padding:10px;
-}
-button{
-padding:10px;
-margin:10px 0;
-}
+body{background:#111;color:white;font-family:Arial;padding:20px}
+textarea{width:100%;height:400px;background:#222;color:white;border:1px solid #444;padding:10px}
+select,button{padding:10px;margin:10px 0}
 </style>
 </head>
 
 <body>
 
+<!-- 🔒 PROTECTION MOT DE PASSE -->
 <script>
-const password = prompt("Mot de passe ?");
-if(password !== "STAFF2026"){
-document.body.innerHTML = "<h1>Accès refusé</h1>";
-throw new Error("Access denied");
+(function(){
+const ok = sessionStorage.getItem("rp_editor_ok");
+if(ok !== "yes"){
+  const password = prompt("Mot de passe STAFF ?");
+  if(password === "STAFF2026"){
+    sessionStorage.setItem("rp_editor_ok","yes");
+  } else {
+    document.body.innerHTML = "<h1>⛔ Accès refusé</h1>";
+    throw new Error("Access denied");
+  }
 }
+})();
 </script>
 
-<h1>Éditeur RP</h1>
+<h1>Editor RP</h1>
 
 <select id="city"></select>
 <br>
 <textarea id="data"></textarea>
 <br>
-<button onclick="save()">Sauver</button>
-<button onclick="del()">Supprimer</button>
+
+<button onclick="save()">💾 Sauver</button>
+<button onclick="del()">🗑️ Supprimer</button>
+<button onclick="exportJSON()">⬇️ Export JSON</button>
+<input type="file" id="import" accept="application/json">
 
 <script src="data.js"></script>
 
 <script>
+
 let state = loadData();
 let current = null;
 
 function list(){
-let s = document.getElementById("city");
+let s=document.getElementById("city");
 s.innerHTML="";
 state.regions.forEach(r=>{
 r.cities.forEach(c=>{
@@ -94,7 +89,26 @@ saveData(state);
 list();
 }
 
+function exportJSON(){
+const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;
+a.download="rdr2_rp_dossier.json";
+a.click();
+}
+
+document.getElementById("import").addEventListener("change",async(e)=>{
+const file=e.target.files[0];
+const txt=await file.text();
+state=JSON.parse(txt);
+saveData(state);
 list();
+alert("Import OK");
+});
+
+list();
+
 </script>
 
 </body>
