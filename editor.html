@@ -1,585 +1,101 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dossier RP — Éditeur</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0f0f0d;
-      --panel:#171612;
-      --panel2:#1d1b15;
-      --ink:#efe9d6;
-      --muted:#c8bfa6;
-      --muted2:#9a9078;
-      --line:#2d2a20;
-      --accent:#d6b56a;
-      --danger:#e07055;
-      --shadow: 0 12px 40px rgba(0,0,0,.45);
-      --radius:18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; background: radial-gradient(1200px 800px at 20% 10%, rgba(214,181,106,.10), transparent 55%),
-              radial-gradient(900px 700px at 90% 30%, rgba(224,112,85,.10), transparent 50%),
-              var(--bg);
-      color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      min-height:100vh;
-    }
-    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dossier RP — Éditeur</title>
+
+<style>
+body{
+background:#111;
+color:white;
+font-family:Arial;
+margin:0;
+padding:20px;
+}
+textarea{
+width:100%;
+height:500px;
+background:#222;
+color:white;
+border:1px solid #444;
+padding:10px;
+}
+button{
+padding:10px;
+margin:10px 0;
+}
+</style>
+</head>
+
+<body>
+
 <script>
 const password = prompt("Mot de passe ?");
 if(password !== "STAFF2026"){
-  document.body.innerHTML = "<h1>Accès refusé</h1>";
-  throw new Error("Access denied");
+document.body.innerHTML = "<h1>Accès refusé</h1>";
+throw new Error("Access denied");
 }
 </script>
-    
-    
-    
-    header{
-      position:sticky; top:0; z-index:10;
-      background: linear-gradient(to bottom, rgba(15,15,13,.92), rgba(15,15,13,.72));
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-    .wrap{max-width:1200px; margin:0 auto; padding:14px 16px;}
-    .topbar{display:flex; gap:12px; align-items:center; justify-content:space-between;}
-    .brand{display:flex; gap:12px; align-items:center;}
-    .badge{
-      width:44px; height:44px; border-radius:14px;
-      background: linear-gradient(145deg, rgba(214,181,106,.22), rgba(214,181,106,.06));
-      border:1px solid rgba(214,181,106,.25);
-      display:grid; place-items:center;
-      box-shadow: var(--shadow);
-    }
-    .badge img{width:28px; height:28px; opacity:.95}
-    h1{
-      margin:0;
-      font-family:"IM Fell English", serif;
-      font-size:22px;
-      letter-spacing:.5px;
-    }
-    .sub{margin:0; color:var(--muted2); font-size:12px}
-    .actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-    .btn{
-      cursor:pointer;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      color:var(--ink);
-      padding:10px 12px;
-      border-radius:14px;
-      font-weight:600;
-      font-size:13px;
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
-      transition: transform .12s ease, border-color .12s ease;
-      text-decoration:none;
-      display:inline-flex; gap:8px; align-items:center;
-    }
-    .btn:hover{transform: translateY(-1px); border-color: rgba(214,181,106,.35)}
-    .btn:active{transform: translateY(0)}
-    .btn.small{padding:8px 10px; border-radius:12px; font-size:12px}
-    .btn.accent{border-color: rgba(214,181,106,.35)}
-    main .wrap{padding-top:18px; padding-bottom:28px;}
-    .grid{
-      display:grid;
-      grid-template-columns: 420px 1fr;
-      gap:14px;
-    }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr; }
-    }
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding:14px 14px 10px 14px;
-      border-bottom:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(214,181,106,.10), transparent);
-    }
-    .hd h2{
-      margin:0;
-      font-size:14px;
-      letter-spacing:.2px;
-      color:var(--muted);
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-    }
-    .pill{
-      padding:4px 10px;
-      border-radius:999px;
-      border:1px solid rgba(214,181,106,.25);
-      background: rgba(214,181,106,.08);
-      color:var(--accent);
-      font-weight:800;
-      font-size:11px;
-      letter-spacing:.4px;
-      white-space:nowrap;
-    }
-    .list{max-height: calc(100vh - 230px); overflow:auto; padding:0 10px 12px 10px;}
-    .regionTitle{
-      margin:12px 10px 8px 10px;
-      color:var(--muted2);
-      font-size:12px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.9px;
-    }
-    .cityBtn{
-      width:100%;
-      display:flex; gap:10px; align-items:center;
-      background: rgba(0,0,0,.18);
-      border:1px solid var(--line);
-      color:var(--ink);
-      padding:10px 10px;
-      border-radius:16px;
-      cursor:pointer;
-      transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      margin:8px 0;
-      text-align:left;
-    }
-    .cityBtn:hover{transform: translateY(-1px); border-color: rgba(214,181,106,.35); background: rgba(0,0,0,.26)}
-    .cityBtn.active{border-color: rgba(214,181,106,.55); background: rgba(214,181,106,.10)}
-    .thumb{
-      width:44px; height:44px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
-      display:grid; place-items:center;
-      overflow:hidden;
-      flex:0 0 auto;
-    }
-    .thumb img{width:34px; height:34px; opacity:.95}
-    .cityMeta{display:flex; flex-direction:column; gap:2px;}
-    .cityName{font-weight:800; font-size:13px; letter-spacing:.2px}
-    .cityRegion{font-size:11px; color:var(--muted2)}
-    .panel{
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      min-height: 520px;
-    }
-    label{font-size:12px; color:var(--muted2); font-weight:800; letter-spacing:.4px; text-transform:uppercase;}
-    input[type="text"], textarea, select{
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.24);
-      color:var(--ink);
-      outline:none;
-    }
-    textarea{
-      min-height: 360px;
-      resize: vertical;
-      line-height: 1.45;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 13px;
-      white-space: pre;
-    }
-    .row{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
-    @media (max-width: 600px){ .row{grid-template-columns:1fr;} }
-    .notice{
-      padding:12px 12px;
-      border-radius:16px;
-      border:1px dashed rgba(214,181,106,.25);
-      background: rgba(0,0,0,.22);
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.4;
-    }
-    .danger{
-      border-color: rgba(224,112,85,.45) !important;
-    }
-    .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-    .toolbar .btn{flex:0 0 auto;}
-    .fileRow{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-    .fileRow input[type="file"]{display:none;}
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 16px;
-      transform: translateX(-50%);
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(214,181,106,.35);
-      background: rgba(15,15,13,.85);
-      color: var(--ink);
-      box-shadow: var(--shadow);
-      font-size: 12px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .18s ease, transform .18s ease;
-    }
-    .toast.show{
-      opacity: 1;
-      transform: translateX(-50%) translateY(-2px);
-    }
-    .inlineHelp{font-size:12px; color:var(--muted2); margin-top:-6px;}
-  </style>
-</head>
-<body>
-  <header>
-    <div class="wrap">
-      <div class="topbar">
-        <div class="brand">
-          <div class="badge"><img src="assets/banner.svg" alt=""></div>
-          <div>
-            <h1>Dossier RP — Éditeur</h1>
-            <p class="sub" id="updatedLine">Données locales • </p>
-          </div>
-        </div>
-        <div class="actions">
-          <a class="btn accent" href="viewer.html" title="Retour au viewer">👁️ Viewer</a>
-          <button class="btn small" id="btnSave">💾 Sauver</button>
-          <button class="btn small" id="btnAddCity">➕ Ajouter une ville</button>
-        </div>
-      </div>
-    </div>
-  </header>
 
-  <main>
-    <div class="wrap">
-      <div class="grid">
-        <section class="card">
-          <div class="hd">
-            <h2>
-              <span>Villes</span>
-              <span class="pill" id="countPill">0</span>
-            </h2>
-          </div>
-          <div class="list" id="cityList"></div>
-        </section>
+<h1>Éditeur RP</h1>
 
-        <section class="card">
-          <div class="panel">
-            <div class="notice">
-              <b>Comment ça marche :</b><br>
-              • Tu sélectionnes une ville à gauche → tu modifies le contenu à droite → <b>Sauver</b>.<br>
-              • Tout est enregistré dans ton navigateur (<i>localStorage</i>).<br>
-              • Pour sauvegarder/partager : <b>Exporter JSON</b>, et pour récupérer : <b>Importer JSON</b>.
-            </div>
+<select id="city"></select>
+<br>
+<textarea id="data"></textarea>
+<br>
+<button onclick="save()">Sauver</button>
+<button onclick="del()">Supprimer</button>
 
-            <div class="row">
-              <div>
-                <label>Comté (région)</label>
-                <select id="regionSelect"></select>
-              </div>
-              <div>
-                <label>Nom de la ville</label>
-                <input id="cityName" type="text" placeholder="Ex: Valentine" />
-              </div>
-            </div>
+<script src="data.js"></script>
 
-            <div class="row">
-              <div>
-                <label>ID (auto)</label>
-                <input id="cityId" type="text" disabled />
-                <div class="inlineHelp">L’ID sert dans l’URL (#ville). Si tu changes le nom, l’ID ne bouge pas (sauf si tu recrées).</div>
-              </div>
-              <div>
-                <label>Image (SVG/PNG) — chemin</label>
-                <input id="cityImage" type="text" placeholder="assets/valentine.svg" />
-                <div class="inlineHelp">Astuce : mets tes images dans <b>assets/</b> et écris le chemin ici.</div>
-              </div>
-            </div>
+<script>
+let state = loadData();
+let current = null;
 
-            <div>
-              <label>Contenu (texte libre)</label>
-              <textarea id="cityContent" spellcheck="false"></textarea>
-              <div class="inlineHelp">Tu peux coller ton format actuel (avec emojis, titres, etc.). Le viewer l’affiche proprement en bloc.</div>
-            </div>
+function list(){
+let s = document.getElementById("city");
+s.innerHTML="";
+state.regions.forEach(r=>{
+r.cities.forEach(c=>{
+let o=document.createElement("option");
+o.value=c.id;
+o.text=c.name;
+s.appendChild(o);
+});
+});
+}
 
-            <div class="toolbar">
-              <button class="btn" id="btnExport">⬇️ Exporter JSON</button>
-              <label class="btn" for="fileImport">⬆️ Importer JSON</label>
-              <input id="fileImport" type="file" accept="application/json" />
-              <button class="btn danger" id="btnDelete">🗑️ Supprimer la ville</button>
-              <button class="btn danger" id="btnReset">↩️ Reset total</button>
-            </div>
+function find(id){
+for(let r of state.regions){
+for(let c of r.cities){
+if(c.id==id)return {r,c};
+}
+}
+}
 
-          </div>
-        </section>
-      </div>
-    </div>
-  </main>
+document.getElementById("city").onchange=e=>{
+let f=find(e.target.value);
+current=f;
+document.getElementById("data").value=f.c.content;
+};
 
-  <div class="toast" id="toast"></div>
+function save(){
+if(!current)return;
+current.c.content=document.getElementById("data").value;
+saveData(state);
+alert("Sauvé");
+}
 
-  <script src="data.js"></script>
-  <script>
-    const state = {
-      data: loadData(),
-      selectedCityId: null
-    };
+function del(){
+if(!current)return;
+current.r.cities=current.r.cities.filter(x=>x.id!==current.c.id);
+saveData(state);
+list();
+}
 
-    const elList = document.getElementById("cityList");
-    const elCount = document.getElementById("countPill");
-    const elUpdated = document.getElementById("updatedLine");
+list();
+</script>
 
-    const elRegionSelect = document.getElementById("regionSelect");
-    const elCityName = document.getElementById("cityName");
-    const elCityId = document.getElementById("cityId");
-    const elCityImage = document.getElementById("cityImage");
-    const elCityContent = document.getElementById("cityContent");
-
-    const toast = (msg) => {
-      const el = document.getElementById("toast");
-      el.textContent = msg;
-      el.classList.add("show");
-      setTimeout(() => el.classList.remove("show"), 1800);
-    };
-
-    function setUpdatedLine(){
-      const m = state.data.meta || {};
-      const when = m.updated_at ? `Dernière maj : ${m.updated_at}` : "Dernière maj : ?";
-      elUpdated.textContent = `Données locales • ${when}`;
-    }
-
-    function groupByRegion(cities){
-      const map = new Map();
-      for (const c of cities){
-        const key = c.regionId;
-        if (!map.has(key)) map.set(key, { regionId: c.regionId, regionName: c.regionName, cities: [] });
-        map.get(key).cities.push(c);
-      }
-      return Array.from(map.values());
-    }
-
-    function renderRegionSelect(){
-      elRegionSelect.innerHTML = "";
-      for (const r of state.data.regions){
-        const opt = document.createElement("option");
-        opt.value = r.id;
-        opt.textContent = r.name;
-        elRegionSelect.appendChild(opt);
-      }
-    }
-
-    function renderList(){
-      const all = listCities(state.data);
-      elCount.textContent = String(all.length);
-      const groups = groupByRegion(all);
-      elList.innerHTML = "";
-
-      for (const g of groups){
-        const title = document.createElement("div");
-        title.className = "regionTitle";
-        title.textContent = g.regionName;
-        elList.appendChild(title);
-
-        for (const c of g.cities){
-          const btn = document.createElement("button");
-          btn.className = "cityBtn" + (state.selectedCityId === c.id ? " active" : "");
-          btn.onclick = () => selectCity(c.id);
-
-          const thumb = document.createElement("div");
-          thumb.className = "thumb";
-          const img = document.createElement("img");
-          img.src = c.image || "assets/banner.svg";
-          img.alt = "";
-          thumb.appendChild(img);
-
-          const meta = document.createElement("div");
-          meta.className = "cityMeta";
-          const name = document.createElement("div");
-          name.className = "cityName";
-          name.textContent = c.name;
-          const region = document.createElement("div");
-          region.className = "cityRegion";
-          region.textContent = g.regionName;
-          meta.appendChild(name);
-          meta.appendChild(region);
-
-          btn.appendChild(thumb);
-          btn.appendChild(meta);
-          elList.appendChild(btn);
-        }
-      }
-    }
-
-    function selectCity(cityId){
-      state.selectedCityId = cityId;
-      const found = findCity(state.data, cityId);
-      if (!found){
-        toast("Ville introuvable");
-        return;
-      }
-      const { region, city } = found;
-      elRegionSelect.value = region.id;
-      elCityName.value = city.name || "";
-      elCityId.value = city.id || "";
-      elCityImage.value = city.image || "";
-      elCityContent.value = city.content || "";
-      location.hash = encodeURIComponent(cityId);
-      renderList();
-    }
-
-    function initFromHash(){
-      const id = decodeURIComponent((location.hash || "").replace("#","")).trim();
-      if (!id) return;
-      const found = findCity(state.data, id);
-      if (found) selectCity(id);
-    }
-
-    function saveCurrent(){
-      if (!state.selectedCityId){
-        toast("Sélectionne une ville");
-        return;
-      }
-      const found = findCity(state.data, state.selectedCityId);
-      if (!found) return;
-
-      const { region, city } = found;
-
-      // Move city to another region if needed
-      const targetRegionId = elRegionSelect.value;
-      if (targetRegionId && targetRegionId !== region.id){
-        // remove from current
-        region.cities = region.cities.filter(x => x.id !== city.id);
-        const target = state.data.regions.find(r => r.id === targetRegionId);
-        if (target) target.cities.push(city);
-      }
-
-      city.name = (elCityName.value || "").trim() || city.name;
-      city.image = (elCityImage.value || "").trim() || "assets/banner.svg";
-      city.content = elCityContent.value || "";
-
-      saveData(state.data);
-      setUpdatedLine();
-      renderList();
-      toast("Sauvé ✅");
-    }
-
-    function addCity(){
-      const name = prompt("Nom de la nouvelle ville ?");
-      if (!name) return;
-      const regionId = elRegionSelect.value || (state.data.regions[0]?.id);
-      const region = state.data.regions.find(r => r.id === regionId);
-      if (!region){
-        toast("Région introuvable");
-        return;
-      }
-      const id = slugify(name);
-      // Ensure unique
-      let finalId = id || ("ville_" + Math.random().toString(16).slice(2));
-      let n = 2;
-      while(findCity(state.data, finalId)){
-        finalId = `${id}_${n++}`;
-      }
-      const city = {
-        id: finalId,
-        name: name.trim(),
-        image: "assets/banner.svg",
-        content: ""
-      };
-      region.cities.push(city);
-      saveData(state.data);
-      setUpdatedLine();
-      renderList();
-      selectCity(finalId);
-      toast("Ville ajoutée ✅");
-    }
-
-    function deleteCity(){
-      if (!state.selectedCityId) return toast("Sélectionne une ville");
-      const found = findCity(state.data, state.selectedCityId);
-      if (!found) return;
-      if (!confirm(`Supprimer définitivement "${found.city.name}" ?`)) return;
-
-      found.region.cities = found.region.cities.filter(c => c.id !== found.city.id);
-      saveData(state.data);
-      setUpdatedLine();
-      state.selectedCityId = null;
-      elCityName.value = "";
-      elCityId.value = "";
-      elCityImage.value = "";
-      elCityContent.value = "";
-      renderList();
-      toast("Supprimé 🗑️");
-    }
-
-    function resetAll(){
-      if (!confirm("Reset TOTAL : revenir aux données d'origine ?")) return;
-      state.data = JSON.parse(JSON.stringify(DEFAULT_DATA));
-      saveData(state.data);
-      setUpdatedLine();
-      state.selectedCityId = null;
-      renderRegionSelect();
-      renderList();
-      elCityName.value = "";
-      elCityId.value = "";
-      elCityImage.value = "";
-      elCityContent.value = "";
-      toast("Reset ✅");
-    }
-
-    // Buttons
-    document.getElementById("btnSave").addEventListener("click", saveCurrent);
-    document.getElementById("btnAddCity").addEventListener("click", addCity);
-    document.getElementById("btnDelete").addEventListener("click", deleteCity);
-    document.getElementById("btnReset").addEventListener("click", resetAll);
-
-    // Export / import
-    document.getElementById("btnExport").addEventListener("click", () => {
-      downloadJSON("rdr2_rp_dossier.json", state.data);
-      toast("Exporté ⬇️");
-    });
-
-    document.getElementById("fileImport").addEventListener("change", async (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      try{
-        const txt = await readFileAsText(file);
-        const parsed = JSON.parse(txt);
-        if (!parsed || !Array.isArray(parsed.regions)) throw new Error("JSON invalide : pas de regions[]");
-        state.data = parsed;
-        saveData(state.data);
-        setUpdatedLine();
-        renderRegionSelect();
-        renderList();
-        state.selectedCityId = null;
-        elCityName.value = "";
-        elCityId.value = "";
-        elCityImage.value = "";
-        elCityContent.value = "";
-        toast("Import OK ✅");
-      } catch(err){
-        console.error(err);
-        alert("Import impossible : " + (err.message || err));
-      } finally {
-        e.target.value = "";
-      }
-    });
-
-    // Autosave (optionnel) : Ctrl/Cmd+S
-    document.addEventListener("keydown", (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s"){
-        e.preventDefault();
-        saveCurrent();
-      }
-    });
-
-    // First render
-    setUpdatedLine();
-    renderRegionSelect();
-    renderList();
-    initFromHash();
-
-    // Default select first city
-    if (!state.selectedCityId){
-      const all = listCities(state.data);
-      if (all.length) selectCity(all[0].id);
-    }
-  </script>
 </body>
 </html>
